@@ -1416,7 +1416,7 @@ Messaging = (function (global) {
      *
      * @param {string} host the address of the messaging server, as a DNS name or dotted decimal IP address.
      * @param {number} port the port number in the host to connect to.
-     * @param {string} clientId the Messaging client identifier, between 1 and 23 characters in length.
+     * @param {string} clientId the Messaging client identifier, 1 or more characters in length [MQTT-3.1.3-5]. MQTT 3.1.1 no longer requires message brokers to reject client identifiers containing 24 or more characters.
      *
      * @property {string} host <i>read only</i> the server's DNS hostname or dotted decimal IP address.
      * @property {number} port <i>read only</i> the server's port.
@@ -1461,7 +1461,7 @@ Messaging = (function (global) {
             }
             clientIdLength++;
         }
-        if (typeof clientId !== "string" || clientIdLength < 1 | clientIdLength > 23)
+        if (typeof clientId !== "string" || clientIdLength < 1)
             throw new Error(format(ERROR.INVALID_ARGUMENT, [clientId, "clientId"]));
 
         var client = new ClientImpl(host, port, clientId);
