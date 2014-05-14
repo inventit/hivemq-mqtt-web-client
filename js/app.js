@@ -23,6 +23,7 @@ var websocketclient = {
     'subscriptions': [],
     'messages': [],
     'connected': false,
+    'maxMessages': 10, // max number of retained messages
 
     'connect': function () {
 
@@ -252,8 +253,11 @@ var websocketclient = {
         'message': function (message) {
 
             var largest = websocketclient.lastMessageId++;
+            if (largest > websocketclient.maxMessages) {
+              $("#m-" + (largest - websocketclient.maxMessages)).remove();
+            }
 
-            var html = '<li class="messLine id="' + largest + '">' +
+            var html = '<li class="messLine" id="m-' + largest + '">' +
                 '   <div class="row large-12 mess' + largest + '" style="border-left: solid 10px #' + message.color + '; ">' +
                 '       <div class="large-12 columns messageText">' +
                 '           <div class="large-3 columns date">' + message.timestamp.format("YYYY-MM-DD HH:mm:ss") + '</div>' +
